@@ -1,0 +1,43 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="yd-top">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+                padding: 10px;
+            }
+        </style>
+
+        <div class="card">
+            <h1>Top Posts</h1>
+            <p>Some list of top posts</p>
+            <ul>
+                <template is="dom-repeat" items="{{posts}}" initial-count="25">
+                    <li>[[item.value]]</li>
+                </template>
+            </ul>
+            <button id="incrementButton">++</button>
+        </div>
+    </template>
+
+    <script>
+    Polymer({
+      is: 'yd-top',
+      listeners: {
+          'incrementButton.tap': 'incrementCount'
+      },
+      ready: function(){
+          var posts = [];
+          for(var i = 0; i < 50; i++){
+              posts.push({value: i+1});
+          }
+          this.set('posts',posts);
+      },
+      incrementCount: function(){
+          this.push('posts',{value: this.posts.length + 1});
+      }
+    });
+  </script>
+</dom-module>
