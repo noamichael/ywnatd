@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/vaadin-upload/vaadin-upload.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="yd-create-post">
@@ -13,7 +14,9 @@
 
     <div class="card">
       <h1>Create Posts</h1>
-      <p>Form Here</p>
+      <form>
+        <vaadin-upload accept="image/*,audio/*"></vaadin-upload>
+      </form>
     </div>
   </template>
 
