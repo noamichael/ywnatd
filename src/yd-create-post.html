@@ -1,5 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/vaadin-upload/vaadin-upload.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="yd-create-post">
@@ -7,15 +10,28 @@
     <style include="shared-styles">
       :host {
         display: block;
-
         padding: 10px;
       }
     </style>
 
     <div class="card">
-      <h1>Create Posts</h1>
+      <h1>Create Post</h1>
       <form>
-        <vaadin-upload accept="image/*,audio/*"></vaadin-upload>
+        <div>
+          <label>Description</label>
+          <paper-textarea id="description"></paper-textarea>
+        </div>
+        <div>
+          <label>Image</label>
+          <vaadin-upload target="http://jsonplaceholder.typicode.com/posts" max-files="1" accept="image/*"></vaadin-upload>
+        </div>
+        <div>
+          <label>Audio</label>
+          <vaadin-upload target="http://jsonplaceholder.typicode.com/posts" max-files="1" accept="audio/*"></vaadin-upload>
+        </div>
+        <div style="padding-top: 2em;">
+          <paper-button raised>Submit</paper-button>
+        </div>
       </form>
     </div>
   </template>
