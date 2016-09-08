@@ -1,7 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/vaadin-upload/vaadin-upload.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<!--<link rel="import" href="../bower_components/vaadin-upload/vaadin-upload.html">-->
 
 <link rel="import" href="shared-styles.html">
 
@@ -12,24 +13,34 @@
         display: block;
         padding: 10px;
       }
+      
+      paper-button {
+        color: red;
+      }
+      
+      paper-button:hover {
+        background:
+      }
+      
+      .form-group {
+        padding-top: 2em
+      }
     </style>
 
     <div class="card">
       <h1>Create Post</h1>
       <form>
-        <div>
-          <label>Description</label>
-          <paper-textarea id="description"></paper-textarea>
+        <div class="form-group">
+          <paper-textarea label="Description" id="description"></paper-textarea>
         </div>
-        <div>
-          <label>Image</label>
-          <vaadin-upload target="http://jsonplaceholder.typicode.com/posts" max-files="1" accept="image/*"></vaadin-upload>
+        <div class="form-group">
+          <paper-input label="Image" type="file"></paper-input>
+          <!--<vaadin-upload target="http://jsonplaceholder.typicode.com/posts" max-files="1" accept="image/*"></vaadin-upload>-->
         </div>
-        <div>
-          <label>Audio</label>
-          <vaadin-upload target="http://jsonplaceholder.typicode.com/posts" max-files="1" accept="audio/*"></vaadin-upload>
+        <div class="form-group">
+          <paper-input label="Audio" type="file"></paper-input>
         </div>
-        <div style="padding-top: 2em;">
+        <div class="form-group">
           <paper-button raised>Submit</paper-button>
         </div>
       </form>

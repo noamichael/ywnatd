@@ -22,10 +22,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/page-title/page-title.html">
 <link rel="import" href="my-icons.html">
+<link rel="import" href="shared-styles.html">
 
 <dom-module id="yd-app">
   <template>
-    <style>
+    <style include="shared-styles">
       :host {
         --app-primary-color: #ff7541;
         --app-secondary-color: white;
@@ -33,8 +34,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         display: block;
       }
-      app-toolbar{
-        color: var(--app-secondary-color);
+      app-toolbar > .user-icon{
+        margin-left: .3em;
+      }
+      app-toolbar > .username{
+        font-style: italic;
+        color: var(--app-primary-color);
       }
       app-header {
         color: #fff;
@@ -51,13 +56,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .drawer-list a {
         display: block;
-
+        text-transform: uppercase;
         padding: 0 16px;
-
         text-decoration: none;
-
         color: var(--app-secondary-color);
-
         line-height: 40px;
       }
 
@@ -79,10 +81,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
       <app-drawer>
-        <app-toolbar>Menu</app-toolbar>
+        <app-toolbar>
+          <div class="circle user-icon">A</div>
+          <span class="username">&nbsp;Aaron Smith</span>
+        </app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="top" href="#/top">Top</a>
-          <a name="create-post" href="#/create-post">Create</a>
+          <a name="top" href="#/top">Top Posts</a>
+          <a name="create-post" href="#/create-post">Create Post</a>
         </iron-selector>
       </app-drawer>
 
@@ -92,7 +97,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <app-header condenses reveals fixed effects="waterfall">
           <app-toolbar>
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            <div main-title>YWNATD?</div>
+            <div main-title>Y W N A T D</div>
           </app-toolbar>
         </app-header>
 
