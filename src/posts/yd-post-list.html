@@ -1,0 +1,26 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="yd-post-list">
+  <template>
+    <style>
+      paper-button{
+        //background: yellow;
+      }
+    </style>
+    <ol>
+      <template is="dom-repeat" items={{posts}} as="post">
+        <li><a href>[[post.name]]</a></li>
+      </template>
+    </ol>
+    <paper-button raised style="float:right">More</paper-button>
+  </template>
+  <script>
+    Polymer({
+      is: 'yd-post-list',
+      properties: {
+        posts: Array
+      }
+    });
+  </script>
+</dom-module>
