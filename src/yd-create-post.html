@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="yd-utils.service.html">
 <!--<link rel="import" href="../bower_components/vaadin-upload/vaadin-upload.html">-->
 
 <link rel="import" href="shared-styles.html">
@@ -26,7 +27,7 @@
         padding-top: 2em
       }
     </style>
-
+    <yd-utils-service id="utils"></yd-utils-service>
     <div class="card">
       <h1>Create Post</h1>
       <form>
@@ -61,7 +62,12 @@
         if(!imageInput.files || imageInput.files.length < 1){
           return;
         }
+        var utils = this.$.utils;
         var image = imageInput.files[0];
+        utils.readFile(image, function(reader){
+          var result = reader.result;
+          var chunkedImage = utils.splitArrayIntoChunks(result, 100);
+        });
         
       },
       _listenForPreview: function(element, previewElement){
@@ -74,15 +80,12 @@
               host.$[previewElement].src = undefined;
               return;
             }
-            var reader = new FileReader();
-            reader.readAsDataURL(file);
-
-            reader.addEventListener('load', function(){
+            host.$.utils.readFile(file, function(reader){
               host.$[previewElement].src = reader.result;
               host.$[previewElement].removeAttribute('hidden');
             });
         });
       }
-    });
+      });
   </script>
 </dom-module>

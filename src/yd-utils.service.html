@@ -1,0 +1,33 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+
+<dom-module id="yd-post-service">
+  <template></template>
+  <script>
+    Polymer({
+        is: 'yd-utils-service',
+        splitArrayIntoChunks: function(array, size){ 
+            var chunked = [];var i = 0;
+            var end = size;
+            while(i < array.length){
+                var nextChunk = [];
+                while(i < end && i < array.length){
+                    nextChunk.push(array[i]);
+                    i++;
+                }
+                chunked.push(nextChunk);
+                end += size;
+            }
+            return chunked;
+        },
+        readFile(file, callback){
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+
+            reader.addEventListener('load', function(){
+            callback(reader);
+            });
+        }
+     });
+  </script>
+</dom-module>
