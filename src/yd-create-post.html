@@ -34,14 +34,16 @@
           <paper-textarea label="Description" id="description"></paper-textarea>
         </div>
         <div class="form-group">
-          <paper-input label="Image" type="file"></paper-input>
+          <paper-input id="image" name="image" label="Image" type="file"></paper-input>
+          <img id="imagePreview" hidden>
           <!--<vaadin-upload target="http://jsonplaceholder.typicode.com/posts" max-files="1" accept="image/*"></vaadin-upload>-->
         </div>
         <div class="form-group">
-          <paper-input label="Audio" type="file"></paper-input>
+          <paper-input id="audio" name="audio" label="Audio" type="file"></paper-input>
+          <audio id="audioPreview" controls hidden>
         </div>
         <div class="form-group">
-          <paper-button raised>Submit</paper-button>
+          <paper-button on-click="createPost" raised>Submit</paper-button>
         </div>
       </form>
     </div>
@@ -49,7 +51,38 @@
 
   <script>
     Polymer({
-      is: 'yd-create-post'
+      is: 'yd-create-post',
+      ready: function(){
+        this._listenForPreview('image', 'imagePreview');
+        this._listenForPreview('audio', 'audioPreview');
+      },
+      createPost: function(){
+        var imageInput = this.$.image.shadowRoot.querySelector('input');
+        if(!imageInput.files || imageInput.files.length < 1){
+          return;
+        }
+        var image = imageInput.files[0];
+        
+      },
+      _listenForPreview: function(element, previewElement){
+        var fileInput = this.$[element].shadowRoot.querySelector('input');
+        var host = this;
+        fileInput.addEventListener('change', function(){
+            var file = this.files[0];
+            if(!file){
+              host.$[previewElement].setAttribute('hidden','');
+              host.$[previewElement].src = undefined;
+              return;
+            }
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+
+            reader.addEventListener('load', function(){
+              host.$[previewElement].src = reader.result;
+              host.$[previewElement].removeAttribute('hidden');
+            });
+        });
+      }
     });
   </script>
 </dom-module>
