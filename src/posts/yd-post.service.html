@@ -3,16 +3,16 @@
 
 <dom-module id="yd-post-service">
   <template>
-      <iron-ajax id="getAllPosts" 
-                 url="http://jsonplaceholder.typicode.com/posts"
-                 handle-as="json"
-                 method="GET"></iron-ajax>
+    <iron-ajax id="getAllPosts" url="http://jsonplaceholder.typicode.com/posts" handle-as="json" method="GET"></iron-ajax>
   </template>
   <script>
     Polymer({
       is: 'yd-post-service',
       getAllPosts: function(){ 
           return this.$.getAllPosts.generateRequest().completes;
+      },
+      createPost: function(title, description, image, audio){
+        //TODO
       }
     });
   </script>

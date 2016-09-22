@@ -2,7 +2,9 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="posts/yd-post.service.html">
 <link rel="import" href="yd-utils.service.html">
+
 <!--<link rel="import" href="../bower_components/vaadin-upload/vaadin-upload.html">-->
 
 <link rel="import" href="shared-styles.html">
@@ -54,20 +56,21 @@
     Polymer({
       is: 'yd-create-post',
       ready: function(){
-        this._listenForPreview('image', 'imagePreview');
-        this._listenForPreview('audio', 'audioPreview');
+        //this._listenForPreview('image', 'imagePreview');
+        //this._listenForPreview('audio', 'audioPreview');
       },
       createPost: function(){
+        var description = this.$.description.value;
         var imageInput = this.$.image.shadowRoot.querySelector('input');
-        if(!imageInput.files || imageInput.files.length < 1){
+        var audioInput = this.$.image.shadowRoot.querySelector('input');
+        
+        if(!description || !this._checkForFiles(imageInput, audioInput)){
           return;
         }
+        
         var utils = this.$.utils;
         var image = imageInput.files[0];
-        utils.readFile(image, function(reader){
-          var result = reader.result;
-          var chunkedImage = utils.splitArrayIntoChunks(result, 100);
-        });
+        var audio = audioInput.files[0];
         
       },
       _listenForPreview: function(element, previewElement){
@@ -80,12 +83,21 @@
               host.$[previewElement].src = undefined;
               return;
             }
-            host.$.utils.readFile(file, function(reader){
+            host.$.utils.readFile(file).then(function(reader){
               host.$[previewElement].src = reader.result;
               host.$[previewElement].removeAttribute('hidden');
             });
         });
+      },
+      _checkForFiles: function(fileInputs){
+        for(var i = 0; i < fileInputs; i++){
+          var input = fileInputs[i];
+          if(!input.files || input.files.length < 1){
+            return false;
+          }
+        }
+        return true;
       }
-      });
+    });
   </script>
 </dom-module>

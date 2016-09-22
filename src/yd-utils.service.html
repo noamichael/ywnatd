@@ -2,8 +2,8 @@
 
 
 <dom-module id="yd-post-service">
-  <template></template>
-  <script>
+    <template></template>
+    <script>
     Polymer({
         is: 'yd-utils-service',
         splitArrayIntoChunks: function(array, size){ 
@@ -20,12 +20,13 @@
             }
             return chunked;
         },
-        readFile(file, callback){
+        readFile(file){
             var reader = new FileReader();
             reader.readAsDataURL(file);
-
-            reader.addEventListener('load', function(){
-            callback(reader);
+            return new Promise(function(resolve){
+                reader.addEventListener('load', function(){
+                    resolve(reader);
+                });
             });
         }
      });
