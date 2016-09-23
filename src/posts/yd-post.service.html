@@ -11,8 +11,28 @@
       getAllPosts: function(){ 
           return this.$.getAllPosts.generateRequest().completes;
       },
-      createPost: function(title, description, image, audio){
-        //TODO
+      createPost: function(data, progress){
+        var form = new FormData();
+
+        form.append('title', data.title);
+        form.append('description', data.description);
+        form.append('image', data.image);
+        form.append('audio', data.audio);
+
+        var req = new XMLHttpRequest();
+
+        req.open("POST", "http://localhost:3000/posts");
+        req.send(form);
+
+        req.addEventListener('progress', function(event){
+          progress && progress(event.loaded / progress.total);
+        });
+
+        return new Promise(function(resolve){
+            req.addEventListener("load", function(){
+              resolve(JSON.parse(this.responseText));
+            });
+        });
       }
     });
   </script>
