@@ -1,8 +1,8 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
-<link rel="import" href="../bower_components/paper-input/paper-input.html">
-<link rel="import" href="posts/yd-post.service.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="yd-post.service.html">
 <link rel="import" href="yd-utils.service.html">
 
 <link rel="import" href="shared-styles.html">
@@ -59,6 +59,11 @@
       ready: function(){
         //this._listenForPreview('image', 'imagePreview');
         //this._listenForPreview('audio', 'audioPreview');
+      },
+      active: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
       },
       createPost: function(){
         var description = this.$.description.value;

@@ -1,0 +1,30 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../shared-styles.html">
+<link rel="import" href="yd-post.service.html">
+
+<dom-module id="yd-all-posts">
+    <template>
+        <style include="shared-styles app-grid-style">
+            :host {
+                display: block;
+                padding: 10px;
+            }
+        </style>
+       All posts here.
+
+    </template>
+
+    <script>
+    Polymer({
+      is: 'yd-all-posts',
+      ready: function(){
+        var host = this;
+        // this.$.PostService.getPost().then(function(r){
+        //     var post = r.response.results[0];
+            
+        // });
+      }
+    });
+  </script>
+</dom-module>

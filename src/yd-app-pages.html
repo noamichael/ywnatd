@@ -1,0 +1,62 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+
+<dom-module id="yd-app-pages">
+    <template>
+        <style>
+            .page-container > * {
+                display: none;
+            }
+            
+            [active] {
+                display: block;
+            }
+        </style>
+        <app-route route="{{route}}" pattern="/posts" tail="{{postsRoute}}"></app-route>
+        <app-route route="{{postsRoute}}" pattern="/create" active="{{createActive}}"></app-route>
+        <app-route route="{{postsRoute}}" pattern="/top" active="{{topActive}}"></app-route>
+        <app-route route="{{postsRoute}}" pattern="/all" active="{{allActive}}"></app-route>
+        <app-route route="{{postsRoute}}" pattern="/v/:id" active="{{viewActive}}" data={{postData}}></app-route>
+        [[str(route)]] [[topActive]]
+        <div class="page-container">
+            <yd-top-posts data-route="top" active$="{{topActive}}"></yd-top-posts>
+            <yd-all-posts data-route="all" active$="{{allActive}}"></yd-all-posts>
+            <yd-view-post data-route="v" active$="{{viewActive}}" post-id="[[postData.id]]"></yd-view-post>
+            <yd-create-post data-route="create" active$="{{createActive}}"></yd-create-post>
+        </div>
+
+    </template>
+    <script>
+        Polymer({
+            is: 'yd-app-pages',
+            ROUTE_REGEX: /^\/([\w]*)(\/[\w]*)?$/,
+            properties: {
+                route: {
+                    type: Object,
+                    notify: true
+                }
+            },
+            observers: [
+                '_onRouteChange(postsRoute.path)'
+            ],
+            _onRouteChange: function(path) {
+                if(!path || path == ''){
+                    return;
+                }
+                var results = this.ROUTE_REGEX.exec(path);
+                var dataRouteToUse = (results || [])[1];
+                if(dataRouteToUse){
+                    var page = this.shadowRoot.querySelector(
+                        '[data-route="' + dataRouteToUse +'"]'
+                        ).tagName.toLowerCase();
+                    var resolvedPageUrl = this.resolveUrl('posts/' + page + '.html');
+                    this.importHref(resolvedPageUrl, null, this._showPage404, true);
+                }
+
+            },
+            str: function(o){
+                return JSON.stringify(o)
+            }
+        });
+  </script>
+</dom-module>

@@ -1,10 +1,10 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/app-layout/app-grid/app-grid-style.html">
-<link rel="import" href="posts/yd-post.service.html">
-<link rel="import" href="posts/yd-post-list.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-layout/app-grid/app-grid-style.html">
+<link rel="import" href="yd-post.service.html">
+<link rel="import" href="yd-post-list.html">
 <link rel="import" href="shared-styles.html">
 
-<dom-module id="yd-top">
+<dom-module id="yd-top-posts">
     <template>
         <style include="shared-styles app-grid-style">
             :host {
@@ -13,7 +13,9 @@
                 display: block;
                 padding: 10px;
             }
-            h1,h3{
+            
+            h1,
+            h3 {
                 text-transform: uppercase;
             }
             
@@ -49,27 +51,23 @@
 
     <script>
     Polymer({
-      is: 'yd-top',
+      is: 'yd-top-posts',
+      active: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+      },
       ready: function(){
         this.set("recentlyCreated", []);
         this.set("topViewedToday", []);
         this.set("topRatedThisWeek", []);
-        for(var i = 0; i < 10; i++){
-            this.push('recentlyCreated',{name: randomName()});
-            this.push('topViewedToday',{name: randomName()});
-            this.push('topRatedThisWeek',{name: randomName()});
-        }
-        function randomName(){
-            return randomWord() +" "+ randomWord() +" "+ randomWord() +" "+ randomWord();
-        }
-        function randomWord(){
-            var titles = [
-                'A', 'The', 'Post', 'Test', 'Car',
-                'With', 'Random','Ignore', 'Please', 
-                'Any', 'Have', 'Tree', 'This', 'Week'
-            ];
-            return titles[Math.floor(Math.random()*titles.length)];
-          }
+        var host = this;
+        this.$.PostService.getAllPosts().then(function(r){
+            var posts = r.response.results;
+            host.set("recentlyCreated", posts);
+            host.set("topViewedToday", posts);
+            host.set("topRatedThisWeek", posts);
+        });
       }
     });
   </script>

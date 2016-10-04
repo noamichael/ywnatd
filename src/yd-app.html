@@ -21,6 +21,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/page-title/page-title.html">
+<link rel="import" href="yd-router.html">
+<link rel="import" href="yd-app-pages.html">
 <link rel="import" href="my-icons.html">
 <link rel="import" href="shared-styles.html">
 
@@ -31,29 +33,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --app-primary-color: #ff7541;
         --app-secondary-color: white;
         --app-info-color: #3f51b5;
-
         display: block;
       }
-      app-toolbar > .user-icon{
+      
+      app-toolbar > .user-icon {
         margin-left: .3em;
       }
-      app-toolbar > .username{
+      
+      app-toolbar > .username {
         font-style: italic;
         color: var(--app-primary-color);
       }
+      
       app-header {
         color: #fff;
         background-color: var(--app-primary-color);
       }
+      
       app-header paper-icon-button {
         --paper-icon-button-ink-color: white;
       }
-      app-drawer{
+      
+      app-drawer {
         --app-drawer-content-container: {
           background: var(--app-info-color);
         }
       }
-
+      
       .drawer-list a {
         display: block;
         text-transform: uppercase;
@@ -62,21 +68,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: var(--app-secondary-color);
         line-height: 40px;
       }
-
+      
       .drawer-list a.iron-selected {
         margin-left: 2px;
         border-left: 2px solid var(--app-primary-color);
         font-weight: bold;
       }
     </style>
-    <page-title base-title="YWNATD?" 
-      title="[[page]]"></page-title>
+
+    <page-title base-title="YWNATD?" title="[[page]]"></page-title>
+
     <app-location route="{{route}}" use-hash-as-path></app-location>
-    <app-route
-        route="{{route}}"
-        pattern="/:page"
-        data="{{routeData}}"
-        tail="{{subroute}}"></app-route>
+    <app-route route="{{route}}" pattern="/"></app-route>
 
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
@@ -85,9 +88,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <div class="circle user-icon">A</div>
           <span class="username">&nbsp;Aaron Smith</span>
         </app-toolbar>
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="top" href="#/top">Top Posts</a>
-          <a name="create-post" href="#/create-post">Create Post</a>
+        <iron-selector selected="[[route.path]]" attr-for-selected="data-page" class="drawer-list" role="navigation">
+          <a data-page="/posts/all" href="#/posts/all">All Posts</a>
+          <a data-page="/posts/top" href="#/posts/top">Top Posts</a>
+          <a data-page="/posts/create" href="#/posts/create">Create Post</a>
         </iron-selector>
       </app-drawer>
 
@@ -100,16 +104,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div main-title>Y W N A T D</div>
           </app-toolbar>
         </app-header>
-
-        <iron-pages
-            selected="[[page]]"
-            attr-for-selected="name"
-            fallback-selection="not-found"
-            role="main">
-          <yd-top name="top"></yd-top>
-          <yd-create-post name="create-post"></yd-create-post>
-          <yd-not-found name="not-found"></yd-not-found>
-        </iron-pages>
+        <yd-app-pages route="{{route}}"></yd-app-pages>
       </app-header-layout>
     </app-drawer-layout>
   </template>
@@ -117,31 +112,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     Polymer({
       is: 'yd-app',
-
-      properties: {
-        page: {
-          type: String,
-          reflectToAttribute: true,
-          observer: '_pageChanged'
+       attached: function() {
+        if (!this.route.path) {
+          this.set('route.path', '/posts/top');
         }
       },
-
-      observers: [
-        '_routePageChanged(routeData.page)'
-      ],
-
-      _routePageChanged: function(page) {
-        this.page = page || 'top';
-      },
-      _pageChanged: function(page) {
-        // Load page import on demand. Show 404 page if fails
-        var resolvedPageUrl = this.resolveUrl('yd-' + page + '.html');
-        this.importHref(resolvedPageUrl, null, this._showPage404, true);
-      },
-
-      _showPage404: function() {
-        this.page = 'not-found';
-      }
+      behaviors: [ RouterBehaviors.LazyLoadElementBehavior]
     });
   </script>
 </dom-module>

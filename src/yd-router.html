@@ -1,0 +1,31 @@
+<script>
+    var RouterBehaviors = RouterBehaviors || {};
+
+    RouterBehaviors.LazyLoadElementBehavior = {} || {
+        properties: {
+            page: {
+                type: String,
+                reflectToAttribute: true,
+                observer: '_pageChanged'
+            },
+            route: {
+                type: Object
+            } 
+        },
+        observers: [
+            '_routePageChanged(routeData.page)'
+        ],
+        _routePageChanged: function(page) {
+            this.page = page || 'top';
+        },
+        _pageChanged: function(page) {
+            // Load page import on demand. Show 404 page if fails
+            var resolvedPageUrl = this.resolveUrl('yd-' + page + '.html');
+            this.importHref(resolvedPageUrl, null, this._showPage404, true);
+        },
+        _showPage404: function() {
+            this.page = 'not-found';
+        }
+    };
+
+</script>
