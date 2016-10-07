@@ -30,7 +30,7 @@
 
         return new Promise(function(resolve){
             req.addEventListener("load", function(){
-              resolve(JSON.parse(this.responseText));
+              resolve(this);
             });
         });
       }

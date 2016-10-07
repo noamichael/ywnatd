@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="yd-post.service.html">
 <link rel="import" href="yd-utils.service.html">
 
@@ -29,14 +30,15 @@
     </style>
     <yd-utils-service id="utils"></yd-utils-service>
     <yd-post-service id="postService"></yd-post-service>
+    <paper-toast id="postSavedToast" text="Post successfully saved."></paper-toast>
     <div class="card">
       <h1>Create Post</h1>
-      <form>
+      <form is="iron-form">
         <div class="form-group">
-          <paper-input label="Title" id="title" required></paper-input>
+          <paper-input label="Title" id="title" required value="{{title}}"></paper-input>
         </div>
         <div class="form-group">
-          <paper-textarea label="Description" id="description" required></paper-textarea>
+          <paper-textarea label="Description" id="description" value="{{description}}" required></paper-textarea>
         </div>
         <div class="form-group">
           <paper-input id="image" name="image" label="Image" type="file"></paper-input>
@@ -66,9 +68,8 @@
           reflectToAttribute: true
       },
       createPost: function(){
-        var description = this.$.description.value;
         var imageInput = this.$.image.shadowRoot.querySelector('input');
-        var audioInput = this.$.image.shadowRoot.querySelector('input');
+        var audioInput = this.$.audio.shadowRoot.querySelector('input');
         
         if(!description || !this._checkForFiles(imageInput, audioInput)){
           return;
@@ -77,8 +78,8 @@
         var createPostComponent = this;
         var image = imageInput.files[0];
         var audio = audioInput.files[0];
-        var title = this.$.title.value;
-        var description = this.$.description.value;
+        var title = this.title;
+        var description = this.description;
 
         this.$.postService.createPost({
           image: image,
@@ -86,6 +87,7 @@
           title: title,
           description: description
         }, function(progress){
+          console.log('Progress: ' + progress);
           createPostComponent.progress = progress;
         }).then(function(done){
           createPostComponent._reset();

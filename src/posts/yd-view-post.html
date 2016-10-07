@@ -1,0 +1,51 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="yd-view-post">
+  <template>
+    <style>
+
+    </style>
+    <iron-ajax auto url="{{getPostUrl()}}" handle-as="json" method="GET" on-response="handleResponse" last-response="{{response}}"></iron-ajax>
+    <audio id="audio" type="audio/mpeg"></audio>
+    <img id="image">
+  </template>
+  <script>
+    Polymer({
+      is: 'yd-view-post',
+      properties: {
+        post: Number
+      },
+      audioReady: false,
+      imageReady: false,
+      ready: function(){
+        var self = this;
+        this.$.audio.addEventListener('canplay', function(){
+          console.log("Audio ready");
+          self.audioReady = true;
+        });
+        this.$.image.addEventListener('load', function() {
+          console.log("Image ready");
+          self.imageReady = true;
+        });
+      },
+      handleResponse(){
+        this.imageReady = false;
+        this.audioReady = false;
+        this.$.audio.src = this.getFile('audio');
+        this.$.image.src = this.getFile('image');
+
+        this.$.audio.load();
+      },
+      getPostUrl: function(){
+        return 'http://localhost:3000/posts/' + this.post;
+      },
+      getFile: function(path){
+        if(this.response){
+          return 'http://localhost:3000/files/' + this.response.results[0][path];
+        }
+        return "";
+      }
+    });
+  </script>
+</dom-module>

@@ -17,11 +17,10 @@
         <app-route route="{{postsRoute}}" pattern="/top" active="{{topActive}}"></app-route>
         <app-route route="{{postsRoute}}" pattern="/all" active="{{allActive}}"></app-route>
         <app-route route="{{postsRoute}}" pattern="/v/:id" active="{{viewActive}}" data={{postData}}></app-route>
-        [[str(route)]] [[topActive]]
         <div class="page-container">
             <yd-top-posts data-route="top" active$="{{topActive}}"></yd-top-posts>
             <yd-all-posts data-route="all" active$="{{allActive}}"></yd-all-posts>
-            <yd-view-post data-route="v" active$="{{viewActive}}" post-id="[[postData.id]]"></yd-view-post>
+            <yd-view-post data-route="v" active$="{{viewActive}}" post="[[postData.id]]"></yd-view-post>
             <yd-create-post data-route="create" active$="{{createActive}}"></yd-create-post>
         </div>
 
